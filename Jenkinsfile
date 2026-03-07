@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone') {
-            steps {
-                git 'https://github.com/TiNuPaL1998/devops-project.git'
-            }
-        }
+    steps {
+        git branch: 'main', url: 'https://github.com/TiNuPaL1998/devops-project.git'
+    }
+}
 
         stage('Build') {
             steps {
@@ -19,5 +20,6 @@ pipeline {
                 echo "Running tests..."
             }
         }
+
     }
 }
