@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "tinupal/devops-project"
-        DOCKER_TAG = "latest"
+        IMAGE_NAME = "tinupal/devops-project"
+        TAG = "latest"
     }
 
     stages {
@@ -16,18 +16,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh 'docker build -t $IMAGE_NAME:$TAG .'
             }
         }
 
         stage('Push Image to DockerHub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push $DOCKER_IMAGE:$DOCKER_TAG
-                    '''
-                }
+                sh 'docker push $IMAGE_NAME:$TAG'
             }
         }
 
